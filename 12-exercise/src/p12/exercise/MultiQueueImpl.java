@@ -85,11 +85,11 @@ public class MultiQueueImpl<T, Q> implements MultiQueue<T, Q>{
     @Override
     public void closeQueueAndReallocate(Q queue) {
         if(!map.containsKey(queue)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The queue is not available");
         }
 
         if(map.keySet().size() == 1){
-            throw new IllegalStateException();
+            throw new IllegalStateException("There's no alternative queue for moving elements to");
         }
 
         for(Q queues : map.keySet()){
