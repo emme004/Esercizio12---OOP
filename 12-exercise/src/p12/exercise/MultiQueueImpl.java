@@ -2,6 +2,7 @@ package p12.exercise;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -87,17 +88,15 @@ public class MultiQueueImpl<T, Q> implements MultiQueue<T, Q>{
         if(!map.containsKey(queue)){
             throw new IllegalArgumentException("The queue is not available");
         }
-
         if(map.keySet().size() == 1){
             throw new IllegalStateException("There's no alternative queue for moving elements to");
         }
-
-        for(Q queues : map.keySet()){
-            if(!queues.equals(queue)){
-                map.get(queues).addAll(dequeueAllFromQueue(queue));
-                break;
-            }
-        }
+        Iterator<Q> iterator = map.keySet().iterator();
+        Q q;
+        do{
+            q = iterator.next();
+        }while(iterator.hasNext() && q == queue);
+        map.get(q).addAll(dequeueAllFromQueue(queue));
         map.remove(queue);
     }
 }
